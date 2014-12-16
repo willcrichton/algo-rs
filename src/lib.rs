@@ -1,3 +1,2 @@
-#[test]
-fn it_works() {
-}
+#![feature(globs)]
+mod kth_largest;
