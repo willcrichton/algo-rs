@@ -1,7 +1,11 @@
 algo-rs
 =======
 
-Assorted algorithms implemented in Rust
+Assorted algorithms implemented in Rust. Currently have:
+* kth-largest element in an unsorted sequence - O(n)
+* minimum spanning tree - O(|E| log |E|)
+
+Also comes with custom graph implementation.
 
 Todo:
 * Augmented trees
