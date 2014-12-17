@@ -53,6 +53,7 @@ mod tests {
             vertices.push(graph.add_node(()));
         }
 
+        // MST is (0, 1) and (2, 0)
         let edges = vec![((vertices[0], vertices[1]), 1u),
                          ((vertices[1], vertices[2]), 3u),
                          ((vertices[2], vertices[0]), 2u)];

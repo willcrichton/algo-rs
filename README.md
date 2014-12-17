@@ -4,6 +4,7 @@ algo-rs
 Assorted algorithms implemented in Rust
 
 Todo:
+* Augmented trees
 * Karp-Rabin
 * DP/memoization framework
 * Max-flow

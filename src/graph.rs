@@ -5,6 +5,7 @@ use FnvMap;
 pub type NodeIndex = uint;
 pub type Edge = (NodeIndex, NodeIndex);
 
+// TODO: write tests for Graph
 pub struct Graph<N, E> {
     pub edges: FnvMap<NodeIndex, FnvMap<NodeIndex, E>>,
     pub nodes: FnvMap<NodeIndex, N>,
