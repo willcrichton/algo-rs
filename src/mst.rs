@@ -1,16 +1,16 @@
 use std::collections::{HashSet, BinaryHeap};
 use rustc::util::nodemap::FnvHasher;
 
-use graph::{Graph, NodeIndex, Edge};
+use graph::{Graph, NodeIndex, Edge, HeapEdge};
 
-pub trait MinSpanningTree<N, E: Ord> {
-    fn MST(&self, graph: Graph<N, E>) -> Vec<Edge>;
+pub trait MinimumSpanningTree<N, E: Ord> {
+    fn minimum_spanning_tree(&self, graph: &Graph<N, E>) -> Vec<Edge>;
 }
 
 pub struct Kruskals;
 
-impl<N, E: Ord> MinSpanningTree<N, E> for Kruskals {
-    fn MST(&self, graph: Graph<N, E>) -> Vec<Edge> {
+impl<N, E: Ord> MinimumSpanningTree<N, E> for Kruskals {
+    fn minimum_spanning_tree(&self, graph: &Graph<N, E>) -> Vec<Edge> {
         let mut vertices = HashSet::with_hasher(FnvHasher);
         let mut edges = Vec::new();
         let all_nodes: Vec<&NodeIndex> = graph.nodes.keys().collect();
@@ -62,7 +62,7 @@ mod tests {
             graph.add_edge(edge, weight);
         }
 
-        let mst = Kruskals.MST(graph);
+        let mst = Kruskals.minimum_spanning_tree(&graph);
         assert!(mst.contains(&(vertices[0], vertices[1])));
         assert!(mst.contains(&(vertices[2], vertices[0])));
         assert!(!mst.contains(&(vertices[1], vertices[2])));

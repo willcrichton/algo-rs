@@ -43,13 +43,36 @@ impl<N, E> Graph<N, E> {
             None => panic!("node {} does not exist", node)
         }
     }
+
+    pub fn find_path(&self, source: &NodeIndex, sink: &NodeIndex) -> Option<Vec<Edge>> {
+        self.find_path_helper(source, sink, Vec::new())
+    }
+
+    fn find_path_helper(&self, source: &NodeIndex, sink: &NodeIndex, path: Vec<Edge>) -> Option<Vec<Edge>> {
+        if source == sink { Some(path) }
+        else {
+            for neighbor in self.neighbors(source).keys() {
+                let edge = (source.clone(), neighbor.clone());
+                if path.contains(&edge) { continue; }
+                let mut new_path = path.clone();
+                new_path.push(edge);
+
+                match self.find_path_helper(neighbor, sink, new_path) {
+                    Some(p) => { return Some(p) },
+                    None => {}
+                }
+            }
+
+            None
+        }
+    }
 }
 
 // HeapEdge is used for creating a min-heap over edges of the Graph
 // in conjunction with std::collections::BinaryHeap
 
 #[deriving(Eq, PartialEq)]
-struct HeapEdge<E>(Edge, E);
+pub struct HeapEdge<E>(pub Edge, pub E);
 
 impl<E: Ord> Ord<HeapEdge<E>> for HeapEdge<E> {
     fn cmp(&self, other: &HeapEdge<E>) -> Ordering {
