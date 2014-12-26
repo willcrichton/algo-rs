@@ -1,4 +1,4 @@
-algo-rs
+algo-rs [![Build Status](https://travis-ci.org/willcrichton/algo-rs/builds)](https://travis-ci.org/willcrichton/algo-rs.svg)
 =======
 
 Assorted algorithms implemented in Rust. Currently have:
