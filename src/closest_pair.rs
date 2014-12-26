@@ -145,9 +145,11 @@ mod tests {
             Point { x: 0.0f32, y: 0.0 },
             Point { x: 10.0, y: 10.0 },
             Point { x: 7.0, y: 7.0 },
+            Point { x: 5.0, y: 5.0 },
+            Point { x: 1.0, y: 1.0 },
             ];
 
         let (p, q) = SarielHarPeled.closest_pair(points.as_slice());
-        assert!((p.distance(q) - points[1].distance(&points[2])).abs() < 0.001);
+        assert!((p.distance(q) - points[0].distance(&points[4])).abs() < 0.001);
     }
 }
