@@ -1,9 +1,16 @@
+//! Implements [selection algorithms](http://en.wikipedia.org/wiki/Selection_algorithm) on lists.
+
 use std::rand::random;
 
+/// Given a list of N things, returns the K-th largest element.
+///
+/// Assumes 0 <= K < N.
 pub trait KthLargest<T: Ord> {
     fn kth_largest<'a>(&self, list: &'a mut [T], k: uint) -> &'a T;
 }
 
+/// [Randomized selection](http://en.wikipedia.org/wiki/Quickselect) -- runs in O(n)
+#[deriving(Copy)]
 pub struct QuickSelect;
 
 impl<T: Ord> QuickSelect {

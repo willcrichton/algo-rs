@@ -1,3 +1,5 @@
+//! Custom 2D point implementation.
+
 use std::num::Float;
 
 #[deriving(Show, Clone)]
@@ -12,10 +14,26 @@ impl<T: Float> Point<T> {
         diff.x + diff.y
     }
 
+    /// Returns the distance between this and another point.
+    ///
+    /// ```rust
+    /// # use algo::point::Point;
+    /// let p: Point<f32> = Point { x: 1.0, y: 2.0 };
+    /// let q = Point { x: 2.0, y: 1.0 };
+    /// let r = p.distance(&q);
+    /// ```
     pub fn distance(&self, other: &Point<T>) -> T {
         self.distance_squared(other).sqrt()
     }
 
+    /// Returns the [dot product](http://en.wikipedia.org/wiki/Dot_product) of this and another point.
+    ///
+    /// ```rust
+    /// # use algo::point::Point;
+    /// let p: Point<f32> = Point { x: 1.0, y: 2.0 };
+    /// let q = Point { x: 2.0, y: 1.0 };
+    /// let r = p.dot(&q);
+    /// ```
     pub fn dot(&self, other: &Point<T>) -> T {
         self.x * other.x + self.y * other.y
     }

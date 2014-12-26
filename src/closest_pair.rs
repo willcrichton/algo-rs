@@ -1,4 +1,5 @@
-use std::fmt::Show;
+//! Implements [closest pair algorithms](http://en.wikipedia.org/wiki/Closest_pair_of_points_problem) on 2D points.
+
 use std::num::{Float, ToPrimitive};
 use std::iter::range_inclusive;
 use std::collections::HashMap;
@@ -8,10 +9,16 @@ use rustc::util::nodemap::FnvHasher;
 use point::Point;
 use FnvMap;
 
+/// Given a set of points P, returns the two points closest to each other.
+///
+/// Assumes |P| >= 2.
 pub trait ClosestPair<T: Float> {
+    // takes a set of points, return a pair of the closest points (no particular order)
     fn closest_pair<'a>(&self, points: &'a [Point<T>]) -> (&'a Point<T>, &'a Point<T>);
 }
 
+// see http://www.cs.cmu.edu/~15451/lectures/lec23/closest-pair.txt
+// for description of the algorithm (not sure if there's a better name...)
 pub struct SarielHarPeled<T>;
 
 struct Grid<'a, T: 'a> {
@@ -21,7 +28,9 @@ struct Grid<'a, T: 'a> {
 }
 
 
-impl<T: Float + Show + ToPrimitive> SarielHarPeled<T> {
+// Float for sqrt math and ToPrimitive so it can be converted to i32 indices
+// Not guaranteed to work for edge cases with NaN/infinity/etc.
+impl<T: Float + ToPrimitive> SarielHarPeled<T> {
     fn boxify(&self, p: &Point<T>, r: T) -> (int, int) {
         ((p.x / r).floor().to_int().unwrap(), (p.y / r).floor().to_int().unwrap())
     }
@@ -112,7 +121,7 @@ impl<T: Float + Show + ToPrimitive> SarielHarPeled<T> {
     }
 }
 
-impl<T: Float + Show + ToPrimitive> ClosestPair<T> for SarielHarPeled<T> {
+impl<T: Float + ToPrimitive> ClosestPair<T> for SarielHarPeled<T> {
     fn closest_pair<'a>(&self, points: &'a [Point<T>]) -> (&'a Point<T>, &'a Point<T>) {
         let len = points.len();
         if len < 2 {
@@ -123,12 +132,9 @@ impl<T: Float + Show + ToPrimitive> ClosestPair<T> for SarielHarPeled<T> {
             let mut grid = self.make_grid(&points[0], &points[1]);
             for i in range(2, points.len()) {
                 self.insert(&mut grid, &points[i]);
-                if i == points.len() - 1 {
-                    return grid.min_pair;
-                }
             }
 
-            unreachable!()
+            grid.min_pair
         }
     }
 }

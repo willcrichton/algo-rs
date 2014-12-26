@@ -1,3 +1,5 @@
+//! Custom graph structure/implementation. Required for use with graph algorithms.
+
 use rustc::util::nodemap::FnvHasher;
 use std::collections::HashMap;
 use FnvMap;
@@ -13,6 +15,13 @@ pub struct Graph<N, E> {
 }
 
 impl<N, E> Graph<N, E> {
+
+    /// Creates a new instance of a graph.
+    ///
+    /// ```rust
+    /// # use algo::graph::Graph;
+    /// let mut graph: Graph<int, ()> = Graph::new();
+    /// ```
     pub fn new() -> Graph<N, E> {
         Graph {
             edges: HashMap::with_hasher(FnvHasher),
@@ -21,6 +30,13 @@ impl<N, E> Graph<N, E> {
         }
     }
 
+    /// Adds a new node to the graph and returns its index.
+    ///
+    /// ```rust
+    /// # use algo::graph::Graph;
+    /// let mut graph: Graph<int, ()> = Graph::new();
+    /// let index = graph.add_node(5);
+    /// ```
     pub fn add_node(&mut self, value: N) -> NodeIndex {
         let index = self.counter;
         self.nodes.insert(index, value);
@@ -28,6 +44,14 @@ impl<N, E> Graph<N, E> {
         return index;
     }
 
+    /// Adds a new edge to the graph.
+    ///
+    /// ```rust
+    /// # use algo::graph::Graph;
+    /// let mut graph: Graph<int, f32> = Graph::new();
+    /// let edge = (graph.add_node(1), graph.add_node(2));
+    /// graph.add_edge(edge, 3.0);
+    /// ```
     pub fn add_edge(&mut self, (from, to): Edge, weight: E) {
         if !self.edges.contains_key(&from) {
             self.edges.insert(from, HashMap::with_hasher(FnvHasher));
@@ -37,6 +61,7 @@ impl<N, E> Graph<N, E> {
         list.insert(to, weight);
     }
 
+    /// Returns a map of the out-neighbors of a node to the weights of the edges from the node to the out-neighbors.
     pub fn neighbors(&self, node: &NodeIndex) -> &FnvMap<NodeIndex, E> {
         match self.edges.get(node) {
             Some(map) => map,

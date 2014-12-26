@@ -1,16 +1,20 @@
+//! Implements [minimum spanning tree algorithms](http://en.wikipedia.org/wiki/Minimum_spanning_tree) on graphs.
+
 use std::collections::{HashSet, BinaryHeap};
 use rustc::util::nodemap::FnvHasher;
 
 use graph::{Graph, Edge, HeapEdge};
 
+/// Given a graph G, if G is connected, returns the edges in the MST of G, otherwise None.
 pub trait MinimumSpanningTree<N, E: Ord> {
-    fn minimum_spanning_tree(&self, graph: &Graph<N, E>) -> Vec<Edge>;
+    fn minimum_spanning_tree(&self, graph: &Graph<N, E>) -> Option<Vec<Edge>>;
 }
 
+#[deriving(Copy)]
 pub struct Kruskals;
 
 impl<N, E: Ord> MinimumSpanningTree<N, E> for Kruskals {
-    fn minimum_spanning_tree(&self, graph: &Graph<N, E>) -> Vec<Edge> {
+    fn minimum_spanning_tree(&self, graph: &Graph<N, E>) -> Option<Vec<Edge>> {
         let mut vertices = HashSet::with_hasher(FnvHasher);
         let mut edges = Vec::new();
 
@@ -24,7 +28,7 @@ impl<N, E: Ord> MinimumSpanningTree<N, E> for Kruskals {
         while vertices.len() < graph.nodes.len() {
             let HeapEdge((from, to), _) = match edge_heap.pop() {
                 Some(edge) => edge,
-                None => panic!("couldn't find MST before edges ran out"),
+                None => { return None; }
             };
 
             if !vertices.contains(&from) || !vertices.contains(&to) {
@@ -34,7 +38,7 @@ impl<N, E: Ord> MinimumSpanningTree<N, E> for Kruskals {
             }
         }
 
-        edges
+        Some(edges)
     }
 }
 
@@ -61,7 +65,7 @@ mod tests {
             graph.add_edge(edge, weight);
         }
 
-        let mst = Kruskals.minimum_spanning_tree(&graph);
+        let mst = Kruskals.minimum_spanning_tree(&graph).unwrap();
         assert!(mst.contains(&(vertices[0], vertices[1])));
         assert!(mst.contains(&(vertices[2], vertices[0])));
         assert!(!mst.contains(&(vertices[1], vertices[2])));

@@ -1,13 +1,20 @@
+//! Implements [max flow algorithms](http://en.wikipedia.org/wiki/Maximum_flow_problem) on graphs.
+
 use std::collections::HashMap;
 use std::num::Int;
 use rustc::util::nodemap::FnvHasher;
 
 use graph::{Graph, Edge, NodeIndex};
 
+/// Given a graph G with capacities on the edges, source S, and sink T, return the edges in G
+/// on the max flow between S and T.
+///
+/// Assumes that S is connected to T.
 pub trait MaxFlow<N, E: Int> {
     fn max_flow(&self, graph: &Graph<N, E>, source: &NodeIndex, sink: &NodeIndex) -> Vec<(Edge, E)>;
 }
 
+#[deriving(Copy)]
 pub struct FordFulkerson;
 
 impl<N, E: Int> MaxFlow<N, E> for FordFulkerson {
