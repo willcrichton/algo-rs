@@ -1,3 +1,5 @@
+use std::rand::random;
+
 pub trait KthLargest<T: Ord> {
     fn kth_largest<'a>(&self, list: &'a mut [T], k: uint) -> &'a T;
 }
@@ -9,7 +11,8 @@ impl<T: Ord> QuickSelect {
         if left == right { &list[left] }
         else {
             loop {
-                let pivot = (right + left) / 2;
+                let pivot = if right == left { left }
+                else { left + random::<uint>() % (right - left) };
                 let pivot = self.partition(list, left, right, pivot);
 
                 if k == pivot { return &list[k] }

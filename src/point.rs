@@ -7,16 +7,16 @@ pub struct Point<T> {
 }
 
 impl<T: Float> Point<T> {
-    fn distance_squared(&self, other: &Point<T>) -> T {
+    pub fn distance_squared(&self, other: &Point<T>) -> T {
         let diff = (self - other) * (self - other);
         diff.x + diff.y
     }
 
-    fn distance(&self, other: &Point<T>) -> T {
+    pub fn distance(&self, other: &Point<T>) -> T {
         self.distance_squared(other).sqrt()
     }
 
-    fn dot(&self, other: &Point<T>) -> T {
+    pub fn dot(&self, other: &Point<T>) -> T {
         self.x * other.x + self.y * other.y
     }
 }
