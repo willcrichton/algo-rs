@@ -38,7 +38,7 @@ impl<T: Float + Show + ToPrimitive> SarielHarPeled<T> {
     }
 
     fn make_grid<'a>(&self, p: &'a Point<T>, q: &'a Point<T>) -> Grid<'a, T> {
-        let mut table = HashMap::with_hasher(FnvHasher);
+        let table = HashMap::with_hasher(FnvHasher);
         let r = p.distance(q);
 
         let mut grid = Grid {
@@ -59,7 +59,7 @@ impl<T: Float + Show + ToPrimitive> SarielHarPeled<T> {
         let (mut q, mut r) = (p, grid.min_dist);
         for nx in range_inclusive(x - 1, x + 1) {
             for ny in range_inclusive(y - 1, y + 1) {
-                match grid.table.find(&(nx, ny)) {
+                match grid.table.get(&(nx, ny)) {
                     Some(pts) => {
                         let (index, dist) = pts
                             .iter().enumerate()
@@ -102,7 +102,7 @@ impl<T: Float + Show + ToPrimitive> SarielHarPeled<T> {
                 grid.min_pair = (p, q);
 
                 for point in points.into_iter() {
-                    self.insert_point(grid, p);
+                    self.insert_point(grid, point);
                 }
             },
             None => {

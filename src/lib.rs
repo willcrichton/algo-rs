@@ -10,7 +10,7 @@ mod kth_largest;
 
 mod graph;
 mod mst;
-mod maxflow;
+mod max_flow;
 
 mod point;
 mod closest_pair;

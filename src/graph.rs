@@ -38,7 +38,7 @@ impl<N, E> Graph<N, E> {
     }
 
     pub fn neighbors(&self, node: &NodeIndex) -> &FnvMap<NodeIndex, E> {
-        match self.edges.find(node) {
+        match self.edges.get(node) {
             Some(map) => map,
             None => panic!("node {} does not exist", node)
         }

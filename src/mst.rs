@@ -1,7 +1,7 @@
 use std::collections::{HashSet, BinaryHeap};
 use rustc::util::nodemap::FnvHasher;
 
-use graph::{Graph, NodeIndex, Edge, HeapEdge};
+use graph::{Graph, Edge, HeapEdge};
 
 pub trait MinimumSpanningTree<N, E: Ord> {
     fn minimum_spanning_tree(&self, graph: &Graph<N, E>) -> Vec<Edge>;
@@ -13,7 +13,6 @@ impl<N, E: Ord> MinimumSpanningTree<N, E> for Kruskals {
     fn minimum_spanning_tree(&self, graph: &Graph<N, E>) -> Vec<Edge> {
         let mut vertices = HashSet::with_hasher(FnvHasher);
         let mut edges = Vec::new();
-        let all_nodes: Vec<&NodeIndex> = graph.nodes.keys().collect();
 
         let mut edge_heap = BinaryHeap::new();
         for (to, neighbors) in graph.edges.iter() {
