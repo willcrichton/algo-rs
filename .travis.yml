@@ -1,4 +1,4 @@
 language: rust
 script:
   - cargo test --verbose
-  - cargo doc
+  - cargo doc --verbose
