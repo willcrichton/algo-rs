@@ -2,3 +2,8 @@ language: rust
 script:
   - cargo test --verbose
   - cargo doc --verbose
+after_script:
+  - curl http://www.rust-ci.org/artifacts/put?t=$RUSTCI_TOKEN | sh
+env:
+  global:
+    - secure: cvZQkr1HiKtBs94/0Ew/p74ZZn2UPCTwIebV2MJr6Ej04bs9qaABDtUzQ82X7ej7+xHtk/wRhtmY9zczcR8OAsDgVjK0HTeqNO6ZsjYz7RvibxdtH256flQK8ht7p/Uah3cyb2u1l+AKdwwdn7J+IOqy2YU88rbLq+enDUA82+c=
