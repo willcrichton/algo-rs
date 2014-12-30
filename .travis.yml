@@ -1,9 +1,17 @@
 language: rust
-script:
-  - cargo test --verbose
-  - cargo doc --verbose
-after_script:
-  - curl http://www.rust-ci.org/artifacts/put?t=$RUSTCI_TOKEN | sh
 env:
   global:
-    - secure: cvZQkr1HiKtBs94/0Ew/p74ZZn2UPCTwIebV2MJr6Ej04bs9qaABDtUzQ82X7ej7+xHtk/wRhtmY9zczcR8OAsDgVjK0HTeqNO6ZsjYz7RvibxdtH256flQK8ht7p/Uah3cyb2u1l+AKdwwdn7J+IOqy2YU88rbLq+enDUA82+c=
+    - secure: SuReUCElAROSnrioUxuJdE2kK5fMwmC+GeT0Ifi88VdG2VxbrVSOQOqTnSSW6xS2FrzXRGDlDeoIyk2i1hNERS0yc/ATe1hGF6TzMUq7zocA+VMcB4CaH79eNZy0NvHObqoySH08duVNikpQnriED9pFoJEZxj2UevQepj411Pw=
+script:
+  - cargo test -v
+  - cargo doc -v
+#after_script:
+#  - curl http://www.rust-ci.org/artifacts/put?t=$RUSTCI_TOKEN | sh
+after_success: |
+  [ $TRAVIS_BRANCH = master ] &&
+  [ $TRAVIS_PULL_REQUEST = false ] &&
+  cargo doc &&
+  echo '<meta http-equiv=refresh content=0;url=image/index.html>' > target/doc/index.html &&
+  sudo pip install ghp-import &&
+  ghp-import -n target/doc &&
+  git push -fq https://${GH_TOKEN}:x-oauth-basic@github.com/${TRAVIS_REPO_SLUG}.git gh-pages
