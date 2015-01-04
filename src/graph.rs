@@ -2,6 +2,7 @@
 
 use rustc::util::nodemap::FnvHasher;
 use std::collections::HashMap;
+use std::cmp::Ordering;
 use FnvMap;
 
 pub type NodeIndex = uint;
@@ -96,11 +97,12 @@ impl<N, E> Graph<N, E> {
 // HeapEdge is used for creating a min-heap over edges of the Graph
 // in conjunction with std::collections::BinaryHeap
 
-#[deriving(Eq, PartialEq)]
+#[derive(Eq, PartialEq)]
 pub struct HeapEdge<E>(pub Edge, pub E);
 
-impl<E: Ord> Ord<HeapEdge<E>> for HeapEdge<E> {
+impl<E: Ord> Ord for HeapEdge<E> {
     fn cmp(&self, other: &HeapEdge<E>) -> Ordering {
+        use std::cmp::Ordering::{Less, Greater, Equal};
         let (&HeapEdge(_, ref me), &HeapEdge(_, ref other)) = (self, other);
         match me.cmp(other) {
             Less => Greater,

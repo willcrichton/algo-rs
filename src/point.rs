@@ -1,8 +1,9 @@
 //! Custom 2D point implementation.
 
 use std::num::Float;
+use std::ops::{Add, Sub, Mul, Div, Neg};
 
-#[deriving(Show, Clone)]
+#[derive(Show, Clone)]
 pub struct Point<T> {
     pub x: T,
     pub y: T,

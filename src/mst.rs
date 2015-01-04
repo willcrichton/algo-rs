@@ -10,7 +10,7 @@ pub trait MinimumSpanningTree<N, E: Ord> {
     fn minimum_spanning_tree(&self, graph: &Graph<N, E>) -> Option<Vec<Edge>>;
 }
 
-#[deriving(Copy)]
+#[derive(Copy)]
 pub struct Kruskals;
 
 impl<N, E: Ord> MinimumSpanningTree<N, E> for Kruskals {

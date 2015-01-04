@@ -10,7 +10,7 @@ pub trait KthLargest<T: Ord> {
 }
 
 /// [Randomized selection](http://en.wikipedia.org/wiki/Quickselect) -- runs in O(n)
-#[deriving(Copy)]
+#[derive(Copy)]
 pub struct QuickSelect;
 
 impl<T: Ord> QuickSelect {

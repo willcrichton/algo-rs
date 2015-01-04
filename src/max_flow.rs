@@ -14,7 +14,7 @@ pub trait MaxFlow<N, E: Int> {
     fn max_flow(&self, graph: &Graph<N, E>, source: &NodeIndex, sink: &NodeIndex) -> Vec<(Edge, E)>;
 }
 
-#[deriving(Copy)]
+#[derive(Copy)]
 pub struct FordFulkerson;
 
 impl<N, E: Int> MaxFlow<N, E> for FordFulkerson {
