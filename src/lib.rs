@@ -1,6 +1,5 @@
-#![feature(globs)]
-#![feature(default_type_params)]
 #![allow(dead_code)]
+
 extern crate rustc;
 
 use rustc::util::nodemap::FnvHasher;

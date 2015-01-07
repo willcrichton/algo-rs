@@ -40,7 +40,9 @@ impl<T: Float> Point<T> {
     }
 }
 
-impl<'a, 'b, T: Add<T, T> + Clone> Add<&'b Point<T>, Point<T>> for &'a Point<T> {
+impl<'a, 'b, T: Add<Output = T> + Clone> Add<&'b Point<T>> for &'a Point<T> {
+    type Output = Point<T>;
+
     fn add(self, other: &'b Point<T>) -> Point<T> {
         Point {
             x: self.x.clone() + other.x.clone(),
@@ -49,7 +51,9 @@ impl<'a, 'b, T: Add<T, T> + Clone> Add<&'b Point<T>, Point<T>> for &'a Point<T> 
     }
 }
 
-impl<T: Add<T, T>> Add<Point<T>, Point<T>> for Point<T> {
+impl<T: Add<Output = T>> Add for Point<T> {
+    type Output = Point<T>;
+
     fn add(self, other: Point<T>) -> Point<T> {
         Point {
             x: self.x + other.x,
@@ -58,7 +62,9 @@ impl<T: Add<T, T>> Add<Point<T>, Point<T>> for Point<T> {
     }
 }
 
-impl<'a, 'b, T: Sub<T, T> + Clone> Sub<&'b Point<T>, Point<T>> for &'a Point<T> {
+impl<'a, 'b, T: Sub<Output = T> + Clone> Sub<&'b Point<T>> for &'a Point<T> {
+    type Output = Point<T>;
+
     fn sub(self, other: &'b Point<T>) -> Point<T> {
         Point {
             x: self.x.clone() - other.x.clone(),
@@ -67,7 +73,9 @@ impl<'a, 'b, T: Sub<T, T> + Clone> Sub<&'b Point<T>, Point<T>> for &'a Point<T> 
     }
 }
 
-impl<T: Sub<T, T>> Sub<Point<T>, Point<T>> for Point<T> {
+impl<T: Sub<Output = T>> Sub for Point<T> {
+    type Output = Point<T>;
+
     fn sub(self, other: Point<T>) -> Point<T> {
         Point {
             x: self.x - other.x,
@@ -76,7 +84,9 @@ impl<T: Sub<T, T>> Sub<Point<T>, Point<T>> for Point<T> {
     }
 }
 
-impl<'a, 'b, T: Mul<T, T> + Clone> Mul<&'b Point<T>, Point<T>> for &'a Point<T> {
+impl<'a, 'b, T: Mul<Output = T> + Clone> Mul<&'b Point<T>> for &'a Point<T> {
+    type Output = Point<T>;
+
     fn mul(self, other: &'b Point<T>) -> Point<T> {
         Point {
             x: self.x.clone() * other.x.clone(),
@@ -85,7 +95,9 @@ impl<'a, 'b, T: Mul<T, T> + Clone> Mul<&'b Point<T>, Point<T>> for &'a Point<T> 
     }
 }
 
-impl<T: Mul<T, T>> Mul<Point<T>, Point<T>> for Point<T> {
+impl<T: Mul<Output = T>> Mul for Point<T> {
+    type Output = Point<T>;
+
     fn mul(self, other: Point<T>) -> Point<T> {
         Point {
             x: self.x * other.x,
@@ -94,7 +106,9 @@ impl<T: Mul<T, T>> Mul<Point<T>, Point<T>> for Point<T> {
     }
 }
 
-impl<'a, 'b, T: Div<T, T> + Clone> Div<&'b Point<T>, Point<T>> for &'a Point<T> {
+impl<'a, 'b, T: Div<Output = T> + Clone> Div<&'b Point<T>> for &'a Point<T> {
+    type Output = Point<T>;
+
     fn div(self, other: &'b Point<T>) -> Point<T> {
         Point {
             x: self.x.clone() / other.x.clone(),
@@ -103,7 +117,9 @@ impl<'a, 'b, T: Div<T, T> + Clone> Div<&'b Point<T>, Point<T>> for &'a Point<T> 
     }
 }
 
-impl<T: Div<T, T>> Div<Point<T>, Point<T>> for Point<T> {
+impl<T: Div<Output = T>> Div for Point<T> {
+    type Output = Point<T>;
+
     fn div(self, other: Point<T>) -> Point<T> {
         Point {
             x: self.x / other.x,
@@ -112,7 +128,9 @@ impl<T: Div<T, T>> Div<Point<T>, Point<T>> for Point<T> {
     }
 }
 
-impl<'a, T: Neg<T> + Clone> Neg<Point<T>> for &'a Point<T> {
+impl<'a, T: Neg<Output = T> + Clone> Neg for &'a Point<T> {
+    type Output = Point<T>;
+
     fn neg(self) -> Point<T> {
         Point {
             x: -self.x.clone(),
@@ -121,7 +139,9 @@ impl<'a, T: Neg<T> + Clone> Neg<Point<T>> for &'a Point<T> {
     }
 }
 
-impl<T: Neg<T>> Neg<Point<T>> for Point<T> {
+impl<T: Neg<Output = T>> Neg for Point<T> {
+    type Output = Point<T>;
+
     fn neg(self) -> Point<T> {
         Point {
             x: -self.x,

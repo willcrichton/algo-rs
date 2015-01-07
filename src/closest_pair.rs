@@ -36,12 +36,12 @@ impl<T: Float + ToPrimitive> SarielHarPeled<T> {
     }
 
     fn insert_point<'a>(&self, grid: &mut Grid<'a, T>, p: &'a Point<T>) {
-        match grid.table.entry(self.boxify(p, grid.min_dist)) {
+        match grid.table.entry(&self.boxify(p, grid.min_dist)) {
             Occupied(mut entry) => {
                 entry.get_mut().push(p);
             },
             Vacant(space) => {
-                space.set(vec![p]);
+                space.insert(vec![p]);
             }
         }
     }
