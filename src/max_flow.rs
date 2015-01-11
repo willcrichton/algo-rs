@@ -1,30 +1,37 @@
 //! Implements [max flow algorithms](http://en.wikipedia.org/wiki/Maximum_flow_problem) on graphs.
 
+use rustc::util::nodemap::FnvHasher;
 use std::collections::HashMap;
 use std::num::Int;
-use rustc::util::nodemap::FnvHasher;
+use std::hash::Hash;
+use std::default::Default;
 
-use graph::{Graph, Edge, NodeIndex};
+use graph::Graph;
+use FnvMap;
 
 /// Given a graph G with capacities on the edges, source S, and sink T, return the edges in G
 /// on the max flow between S and T.
 ///
 /// Assumes that S is connected to T.
-pub trait MaxFlow<N, E: Int> {
-    fn max_flow(&self, graph: &Graph<N, E>, source: &NodeIndex, sink: &NodeIndex) -> Vec<(Edge, E)>;
+pub trait MaxFlow<G: Graph> where G::EdgeValue: Int {
+    fn max_flow(&self, graph: &G, source: G::NodeIndex, sink: G::NodeIndex)
+                -> Vec<((G::NodeIndex, G::NodeIndex), G::EdgeValue)>;
 }
 
 #[derive(Copy)]
 pub struct FordFulkerson;
 
-impl<N, E: Int> MaxFlow<N, E> for FordFulkerson {
-    fn max_flow(&self, graph: &Graph<N, E>, source: &NodeIndex, sink: &NodeIndex) -> Vec<(Edge, E)>
+impl<G: Graph> MaxFlow<G> for FordFulkerson
+    where G::EdgeValue: Int, G::NodeIndex: Hash<FnvHasher> + Eq
+{
+    fn max_flow(&self, graph: &G, source: G::NodeIndex, sink: G::NodeIndex)
+                -> Vec<((G::NodeIndex, G::NodeIndex), G::EdgeValue)>
     {
-        let mut flows = HashMap::with_hasher(FnvHasher);
-        for (from, neighbors) in graph.edges.iter() {
-            for to in neighbors.keys() {
-                flows.insert((from, to), 0u);
-            }
+        let mut flows: FnvMap<(G::NodeIndex, G::NodeIndex), usize> =
+            HashMap::with_hash_state(Default::default());
+
+        for &(from, to, _) in graph.edges().iter() {
+            flows.insert((from, to), 0us);
         }
 
         let mut path = graph.find_path(source, sink);
@@ -49,27 +56,27 @@ impl<N, E: Int> MaxFlow<N, E> for FordFulkerson {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use graph::Graph;
+    use graph::{AdjacencyList, Graph};
 
     #[test]
     fn simple() {
-        let mut graph = Graph::new();
+        let mut graph = AdjacencyList::new();
         let mut vertices = Vec::new();
 
-        for _ in range(0, 4u) {
+        for _ in range(0, 4us) {
             vertices.push(graph.add_node(()));
         }
 
         let edges = vec![
-            ((vertices[0], vertices[1]), 10u),
-            ((vertices[0], vertices[2]), 10u),
-            ((vertices[1], vertices[2]), 1u),
-            ((vertices[1], vertices[3]), 10u),
-            ((vertices[2], vertices[3]), 10u),
+            ((vertices[0], vertices[1]), 10us),
+            ((vertices[0], vertices[2]), 10us),
+            ((vertices[1], vertices[2]), 1us),
+            ((vertices[1], vertices[3]), 10us),
+            ((vertices[2], vertices[3]), 10us),
             ];
 
-        for (edge, weight) in edges.into_iter() {
-            graph.add_edge(edge, weight);
+        for ((from, to), weight) in edges.into_iter() {
+            graph.add_edge(from, to, weight);
         }
 
         //let min_flow = FordFulkerson.max_flow(&graph, &vertices[0], &vertices[3]);

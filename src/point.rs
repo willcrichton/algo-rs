@@ -156,28 +156,28 @@ mod tests {
 
     #[test]
     fn add() {
-        let r = Point {x: 1u, y: 1} + Point {x: 2, y: 3};
+        let r = Point {x: 1us, y: 1} + Point {x: 2, y: 3};
         assert_eq!(r.x, 3);
         assert_eq!(r.y, 4);
     }
 
     #[test]
     fn sub() {
-        let r = Point {x: 2u, y: 2} - Point {x: 0, y: 1};
+        let r = Point {x: 2us, y: 2} - Point {x: 0, y: 1};
         assert_eq!(r.x, 2);
         assert_eq!(r.y, 1);
     }
 
     #[test]
     fn mul() {
-        let r = Point {x: 2u, y: 2} * Point {x: 0, y: 1};
+        let r = Point {x: 2us, y: 2} * Point {x: 0, y: 1};
         assert_eq!(r.x, 0);
         assert_eq!(r.y, 2);
     }
 
     #[test]
     fn div() {
-        let r = Point {x: 2u, y: 2} / Point {x: 2, y: 1};
+        let r = Point {x: 2us, y: 2} / Point {x: 2, y: 1};
         assert_eq!(r.x, 1);
         assert_eq!(r.y, 2);
     }
@@ -185,12 +185,12 @@ mod tests {
     #[test]
     #[should_fail]
     fn div_fail() {
-        Point {x: 2u, y: 2} / Point {x: 0, y: 1};
+        Point {x: 2us, y: 2} / Point {x: 0, y: 1};
     }
 
     #[test]
     fn neg() {
-        let r = -(Point {x: 1i, y: 2});
+        let r = -(Point {x: 1is, y: 2});
         assert_eq!(r.x, -1);
         assert_eq!(r.y, -2);
     }

@@ -3,8 +3,8 @@
 use std::num::{Float, ToPrimitive};
 use std::iter::range_inclusive;
 use std::collections::HashMap;
+use std::default::Default;
 use std::collections::hash_map::Entry::{Occupied, Vacant};
-use rustc::util::nodemap::FnvHasher;
 
 use point::Point;
 use FnvMap;
@@ -22,7 +22,7 @@ pub trait ClosestPair<T: Float> {
 pub struct SarielHarPeled<T>;
 
 struct Grid<'a, T: 'a> {
-    table: FnvMap<(int, int), Vec<&'a Point<T>>>,
+    table: FnvMap<(isize, isize), Vec<&'a Point<T>>>,
     min_dist: T,
     min_pair: (&'a Point<T>, &'a Point<T>),
 }
@@ -31,12 +31,12 @@ struct Grid<'a, T: 'a> {
 // Float for sqrt math and ToPrimitive so it can be converted to i32 indices
 // Not guaranteed to work for edge cases with NaN/infinity/etc.
 impl<T: Float + ToPrimitive> SarielHarPeled<T> {
-    fn boxify(&self, p: &Point<T>, r: T) -> (int, int) {
+    fn boxify(&self, p: &Point<T>, r: T) -> (isize, isize) {
         ((p.x / r).floor().to_int().unwrap(), (p.y / r).floor().to_int().unwrap())
     }
 
     fn insert_point<'a>(&self, grid: &mut Grid<'a, T>, p: &'a Point<T>) {
-        match grid.table.entry(&self.boxify(p, grid.min_dist)) {
+        match grid.table.entry(self.boxify(p, grid.min_dist)) {
             Occupied(mut entry) => {
                 entry.get_mut().push(p);
             },
@@ -47,7 +47,7 @@ impl<T: Float + ToPrimitive> SarielHarPeled<T> {
     }
 
     fn make_grid<'a>(&self, p: &'a Point<T>, q: &'a Point<T>) -> Grid<'a, T> {
-        let table = HashMap::with_hasher(FnvHasher);
+        let table = HashMap::with_hash_state(Default::default());
         let r = p.distance(q);
 
         let mut grid = Grid {
