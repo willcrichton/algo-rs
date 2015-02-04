@@ -7,3 +7,5 @@ script:
   - cargo doc -v
 after_script:
   - curl http://www.rust-ci.org/artifacts/put?t=$RUSTCI_TOKEN | sh
+notifications:
+  email: false
