@@ -1,16 +1,15 @@
 //! Custom 2D point implementation.
 
-use std::num::Float;
 use std::ops::{Add, Sub, Mul, Div, Neg};
 
-#[derive(Show, Clone)]
+#[derive(Debug, Clone)]
 pub struct Point<T> {
     pub x: T,
     pub y: T,
 }
 
-impl<T: Float> Point<T> {
-    pub fn distance_squared(&self, other: &Point<T>) -> T {
+impl Point<f32> {
+    pub fn distance_squared(&self, other: &Point<f32>) -> f32 {
         let diff = (self - other) * (self - other);
         diff.x + diff.y
     }
@@ -23,7 +22,7 @@ impl<T: Float> Point<T> {
     /// let q = Point { x: 2.0, y: 1.0 };
     /// let r = p.distance(&q);
     /// ```
-    pub fn distance(&self, other: &Point<T>) -> T {
+    pub fn distance(&self, other: &Point<f32>) -> f32 {
         self.distance_squared(other).sqrt()
     }
 
@@ -35,7 +34,7 @@ impl<T: Float> Point<T> {
     /// let q = Point { x: 2.0, y: 1.0 };
     /// let r = p.dot(&q);
     /// ```
-    pub fn dot(&self, other: &Point<T>) -> T {
+    pub fn dot(&self, other: &Point<f32>) -> f32 {
         self.x * other.x + self.y * other.y
     }
 }
@@ -156,41 +155,41 @@ mod tests {
 
     #[test]
     fn add() {
-        let r = Point {x: 1us, y: 1} + Point {x: 2, y: 3};
+        let r = Point {x: 1u32, y: 1} + Point {x: 2, y: 3};
         assert_eq!(r.x, 3);
         assert_eq!(r.y, 4);
     }
 
     #[test]
     fn sub() {
-        let r = Point {x: 2us, y: 2} - Point {x: 0, y: 1};
+        let r = Point {x: 2u32, y: 2} - Point {x: 0, y: 1};
         assert_eq!(r.x, 2);
         assert_eq!(r.y, 1);
     }
 
     #[test]
     fn mul() {
-        let r = Point {x: 2us, y: 2} * Point {x: 0, y: 1};
+        let r = Point {x: 2u32, y: 2} * Point {x: 0, y: 1};
         assert_eq!(r.x, 0);
         assert_eq!(r.y, 2);
     }
 
     #[test]
     fn div() {
-        let r = Point {x: 2us, y: 2} / Point {x: 2, y: 1};
+        let r = Point {x: 2u32, y: 2} / Point {x: 2, y: 1};
         assert_eq!(r.x, 1);
         assert_eq!(r.y, 2);
     }
 
     #[test]
-    #[should_fail]
+    #[should_panic]
     fn div_fail() {
-        Point {x: 2us, y: 2} / Point {x: 0, y: 1};
+        Point {x: 2u32, y: 2} / Point {x: 0, y: 1};
     }
 
     #[test]
     fn neg() {
-        let r = -(Point {x: 1is, y: 2});
+        let r = -(Point {x: 1i32, y: 2});
         assert_eq!(r.x, -1);
         assert_eq!(r.y, -2);
     }

@@ -1,10 +1,7 @@
 //! Custom graph structure/implementation. Required for use with graph algorithms.
 
 use std::collections::HashMap;
-use std::default::Default;
 use std::cmp::Ordering;
-
-use FnvMap;
 
 pub trait Graph {
     type NodeValue;
@@ -36,17 +33,17 @@ type NodeIndex = usize;
 // TODO: write tests for this
 #[derive(Eq, PartialEq)]
 pub struct AdjacencyList<N, E> {
-    edges: FnvMap<NodeIndex, FnvMap<NodeIndex, E>>,
-    nodes: FnvMap<NodeIndex, N>,
+    edges: HashMap<NodeIndex, HashMap<NodeIndex, E>>,
+    nodes: HashMap<NodeIndex, N>,
     counter: NodeIndex,
 }
 
 impl<N, E> AdjacencyList<N, E> {
     pub fn new() -> Self {
         AdjacencyList {
-            edges: HashMap::with_hash_state(Default::default()),
-            nodes: HashMap::with_hash_state(Default::default()),
-            counter: 0us,
+            edges: HashMap::new(),
+            nodes: HashMap::new(),
+            counter: 0usize,
         }
     }
 
@@ -73,7 +70,7 @@ impl<N, E> AdjacencyList<N, E> {
 impl<N, E> Graph for AdjacencyList<N, E> {
     type NodeValue = N;
     type EdgeValue = E;
-    type NodeIndex = NodeIndex;
+    type NodeIndex = usize;
 
     fn nodes(&self) -> Vec<NodeIndex> {
         self.nodes.keys().map(|x| *x).collect()
@@ -96,7 +93,7 @@ impl<N, E> Graph for AdjacencyList<N, E> {
 
     fn add_edge(&mut self, from: NodeIndex, to: NodeIndex, weight: E) {
         if !self.edges.contains_key(&from) {
-            self.edges.insert(from, HashMap::with_hash_state(Default::default()));
+            self.edges.insert(from, HashMap::new());
         }
 
         let mut list = self.edges.get_mut(&from).unwrap();

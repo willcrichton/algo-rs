@@ -3,3 +3,7 @@
 name = "algo"
 version = "0.0.1"
 authors = ["Will Crichton <willcrichton@cmu.edu>"]
+
+[dependencies]
+
+rand = "0.3"
